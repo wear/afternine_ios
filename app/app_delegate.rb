@@ -1,3 +1,5 @@
+AssetHost = NSBundle.mainBundle.objectForInfoDictionaryKey('asset_host')
+
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     true

@@ -1,5 +1,6 @@
 .repl_history
 build
+vendor
 tags
 app/pixate_code.rb
 resources/*.nib
@@ -14,3 +15,4 @@ nbproject
 .eprj
 .sass-cache
 .idea
+ib.xcodeproj
