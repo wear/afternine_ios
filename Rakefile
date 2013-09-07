@@ -24,11 +24,8 @@ Motion::Project::App.setup do |app|
     pod 'AFNetworking' ,'1.3.2'
     pod 'Reachability', '~> 3.0.0'
     pod 'SDWebImage'
+    pod 'SVPullToRefresh'
   end
-
-  # app.vendor_project('vendor/uiimage-from-animated-gif',
-  #                :xcode,
-  #                :headers_dir => 'uiimage-from-animated-gif')
 
 end
 
