@@ -101,8 +101,6 @@ class TopicsController < UITableViewController
     cell = tableView.dequeueReusableCellWithIdentifier(@cellIdentifier)
 
     image_url = NSURL.URLWithString("#{topic['image']['normal']}")
-    image_data = NSData.dataWithContentsOfURL(image_url)
-
     cell.topic_imageview.setImageWithURL(image_url,placeholderImage:UIImage.imageNamed("placeholder.gif"))
     cell.comment_label.text = topic['comment']
     cell
@@ -117,18 +115,17 @@ class TopicsController < UITableViewController
     end
   end
 
+  def tableView(tableView, didSelectRowAtIndexPath:indexPath)
+    @current_topic = @topics[indexPath.row]
+    self.performSegueWithIdentifier('topic_detail',sender:nil)
+  end
 
-  # def tableView(tableView, didSelectRowAtIndexPath:indexPath)
-  #   @current_topic = @topics[indexPath.row]
-  #   # self.performSegueWithIdentifier('topic_detail',sender:nil)
-  # end
 
-
-  # def prepareForSegue(segue, sender:sender)
-  #   case segue.identifier
-  #   when "topic_detail"
-  #     segue.destinationViewController.topic = @current_topic
-  #   end
-  # end
+  def prepareForSegue(segue, sender:sender)
+    case segue.identifier
+    when "topic_detail"
+      segue.destinationViewController.topic = @current_topic
+    end
+  end
 
 end

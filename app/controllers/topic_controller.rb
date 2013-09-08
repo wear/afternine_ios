@@ -10,34 +10,29 @@ class TopicController < UIViewController
 
   def viewDidLoad
     # comment_label.text = topic[:comment]
-    @image = UIImage.imageWithData NSData.dataWithContentsOfURL(NSURL.URLWithString("#{AssetHost}#{topic['image']['normal']}"))
-    topic_imageview.image = @image
+    image_url = NSURL.URLWithString("#{topic['image']['normal']}")
+    @image = topic_imageview.setImageWithURL(image_url,placeholderImage:UIImage.imageNamed("placeholder.gif"))
 
     # recognizer = UIPanGestureRecognizer.alloc.initWithTarget(self,action:'recognizerDidPan:')
     # view.addGestureRecognizer(recognizer)
-  end
 
-  def layoutSubviews
-    super
-    # center the image as it becomes smaller than the size of the screen
-    boundsSize = self.bounds.size;
-    frameToCenter = topic_imageview.frame;
+    # Create a view of the standard size at the top of the screen.
+    # Available AdSize constants are explained in GADAdSize.h.
+    origin = CGPointMake(0.0,self.view.frame.size.height-CGSizeFromGADAdSize(KGADAdSizeBanner).height);
+    banner_view = GADBannerView.alloc.initWithAdSize(KGADAdSizeBanner,origin:origin)
 
-    # center horizontally
-    if (frameToCenter.size.width < boundsSize.width)
-      frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2;
-    else
-      frameToCenter.origin.x = 0;
-    end
+    # Specify the ad's "unit identifier". This is your AdMob Publisher ID.
+    banner_view.adUnitID = 'a1522beb8637906'
 
-    # center vertically
-    if (frameToCenter.size.height < boundsSize.height)
-      frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2;
-    else
-      frameToCenter.origin.y = 0;
-    end
+    # Let the runtime know which UIViewController to restore after taking
+    # the user wherever the ad goes and add it to the view hierarchy.
+    banner_view.rootViewController = self
+    self.view.addSubview banner_view
 
-    tileContainerView.frame = frameToCenter;
+    # Initiate a generic request to load it with an ad.
+    request = GADRequest.request
+    request.testDevices = ['8FAA601E-A20C-500D-9136-931E516BF252','db53b06b5c20150b4e8fe3e6b64a354e54f3caa3']
+    banner_view.loadRequest request    
   end
 
   def viewForZoomingInScrollView(scrollView)
@@ -54,10 +49,10 @@ class TopicController < UIViewController
   #   self.navigationController.setNavigationBarHidden(false,animated:true)
   # end
 
-  # def recognizerDidPan(recognizer)
-  #   if navigationController
-  #     navigationController.popViewControllerAnimated true
-  #   end
-  # end
+  def recognizerDidPan(recognizer)
+    if navigationController
+      navigationController.popViewControllerAnimated true
+    end
+  end
 
 end
