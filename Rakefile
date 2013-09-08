@@ -11,7 +11,7 @@ end
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'afternine'
-  app.scheme = '本地测试'
+  app.scheme = '远程'
   app.interface_orientations = [:portrait]
   app.xcode_dir = "/Applications/Xcode.app/Contents/Developer"
   app.sdk_version = '6.1'

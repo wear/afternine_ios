@@ -62,33 +62,46 @@
         <scene sceneID="7Gs-Rn-UmN">
             <objects>
                 <viewController id="Yvl-pC-NMX" customClass="TopicController" sceneMemberID="viewController">
-                    <scrollView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" maximumZoomScale="4" id="ALQ-zV-ont">
+                    <view key="view" contentMode="scaleToFill" id="2Xy-X7-gP6">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="KQv-Iz-m1i">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </imageView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" maximumZoomScale="3" translatesAutoresizingMaskIntoConstraints="NO" id="dmw-oP-Ck1">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="453"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GWj-cr-rhr">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="453"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="GWj-cr-rhr" secondAttribute="trailing" type="default" id="11m-UO-clr"/>
+                                    <constraint firstItem="GWj-cr-rhr" firstAttribute="centerY" secondItem="dmw-oP-Ck1" secondAttribute="centerY" type="default" id="Fdp-Rn-FSg"/>
+                                    <constraint firstItem="GWj-cr-rhr" firstAttribute="top" secondItem="dmw-oP-Ck1" secondAttribute="top" type="default" id="PZj-Fb-ShS"/>
+                                    <constraint firstItem="GWj-cr-rhr" firstAttribute="centerX" secondItem="dmw-oP-Ck1" secondAttribute="centerX" type="default" id="QRg-rR-OFt"/>
+                                    <constraint firstItem="GWj-cr-rhr" firstAttribute="leading" secondItem="dmw-oP-Ck1" secondAttribute="leading" type="default" id="gbu-Ec-HoS"/>
+                                    <constraint firstAttribute="bottom" secondItem="GWj-cr-rhr" secondAttribute="bottom" type="default" id="tfA-VB-BAQ"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="Yvl-pC-NMX" id="jhm-JV-2Ag"/>
+                                </connections>
+                            </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <constraints>
-                            <constraint firstItem="KQv-Iz-m1i" firstAttribute="leading" secondItem="ALQ-zV-ont" secondAttribute="leading" type="default" id="2Ut-bj-8pK"/>
-                            <constraint firstItem="KQv-Iz-m1i" firstAttribute="bottom" secondItem="ALQ-zV-ont" secondAttribute="bottom" type="default" id="68p-gK-1Z7"/>
-                            <constraint firstItem="KQv-Iz-m1i" firstAttribute="centerX" secondItem="ALQ-zV-ont" secondAttribute="centerX" type="default" id="BW7-cC-kzl"/>
-                            <constraint firstItem="KQv-Iz-m1i" firstAttribute="top" secondItem="ALQ-zV-ont" secondAttribute="top" type="default" id="DxK-oI-nna"/>
-                            <constraint firstItem="KQv-Iz-m1i" firstAttribute="trailing" secondItem="ALQ-zV-ont" secondAttribute="trailing" type="default" id="ERI-IY-7Cr"/>
-                            <constraint firstItem="KQv-Iz-m1i" firstAttribute="centerY" secondItem="ALQ-zV-ont" secondAttribute="centerY" type="default" id="pEa-AY-adh"/>
+                            <constraint firstItem="dmw-oP-Ck1" firstAttribute="leading" secondItem="2Xy-X7-gP6" secondAttribute="leading" type="default" id="55O-R1-zh5"/>
+                            <constraint firstAttribute="trailing" secondItem="dmw-oP-Ck1" secondAttribute="trailing" type="default" id="leD-Kx-ANx"/>
+                            <constraint firstItem="dmw-oP-Ck1" firstAttribute="top" secondItem="2Xy-X7-gP6" secondAttribute="top" type="default" id="uUz-Ju-B6X"/>
+                            <constraint firstAttribute="bottom" secondItem="dmw-oP-Ck1" secondAttribute="bottom" constant="51" id="wT4-Tc-1AR"/>
                         </constraints>
-                        <connections>
-                            <outlet property="delegate" destination="Yvl-pC-NMX" id="Hvk-aH-am7"/>
-                        </connections>
-                    </scrollView>
+                    </view>
                     <navigationItem key="navigationItem" id="Hr3-vF-iWj">
                         <barButtonItem key="rightBarButtonItem" title="分享到微信" id="kyO-D5-9MO"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="topic_imageview" destination="KQv-Iz-m1i" id="Ab4-HT-C4h"/>
+                        <outlet property="scrollView" destination="dmw-oP-Ck1" id="6hU-mq-EAa"/>
+                        <outlet property="topic_imageview" destination="GWj-cr-rhr" id="Gmv-qa-2Jm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BDJ-jX-9nl" userLabel="First Responder" sceneMemberID="firstResponder"/>
