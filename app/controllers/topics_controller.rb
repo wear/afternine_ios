@@ -8,32 +8,38 @@ class TopicsController < UITableViewController
   end
 
   def viewDidLoad
-    SVProgressHUD.showWithStatus '正在同步数据，请稍侯'
 
-    url = NSURL.URLWithString "#{AssetHost}/topics.json"
-    request = NSURLRequest.requestWithURL url
-    error = Pointer.new_with_type("@")
-    operation = AFJSONRequestOperation.JSONRequestOperationWithRequest(request,
-      success:->(request,response,jsonData) {
-        SVProgressHUD.dismiss
-        @topics = jsonData['topics']
-        @first_topic = @topics.first
-        @last_topic = @topics.last
-        self.tableView.reloadData
-    },failure:nil)
+    reach = Reachability.reachabilityWithHostname "www.baidu.com"
+    
+    reach.reachableBlock = lambda {|info|
+      main_queue = Dispatch::Queue.main
+      main_queue.async { tableView.triggerPullToRefresh }      
+    }
 
-    operation.start
+    reach.unreachableBlock = lambda {|info|
+      main_queue = Dispatch::Queue.main
+      main_queue.async { App.alert('无网络连接') }
+    }
+
+    reach.startNotifier
 
     #setup pull-to-refresh
     self.tableView.addPullToRefreshWithActionHandler ->{insertRowAtTop}
 
     # setup infinite scrolling
-    self.tableView.addInfiniteScrollingWithActionHandler ->{insertRowAtBottom}
+    self.tableView.addInfiniteScrollingWithActionHandler ->{
+      insertRowAtBottom if @last_topic
+    }
   end
 
   # 拉动更新
   def insertRowAtTop
-    url = NSURL.URLWithString "#{AssetHost}/topics/before_at.json?target_topic_id=#{@first_topic['id']}"    
+    url = if @first_topic
+      NSURL.URLWithString "#{AssetHost}/topics/before_at.json?target_topic_id=#{@first_topic['id']}"    
+    else
+      NSURL.URLWithString "#{AssetHost}/topics/before_at.json"
+    end
+
     request = NSURLRequest.requestWithURL url
     operation = AFJSONRequestOperation.JSONRequestOperationWithRequest(request,
       success:->(request,response,jsonData) {
@@ -101,7 +107,7 @@ class TopicsController < UITableViewController
     cell = tableView.dequeueReusableCellWithIdentifier(@cellIdentifier)
 
     image_url = NSURL.URLWithString("#{topic['image']['normal']}")
-    cell.topic_imageview.setImageWithURL(image_url,placeholderImage:UIImage.imageNamed("placeholder.gif"))
+    cell.topic_imageview.setImageWithURL(image_url,placeholderImage:UIImage.imageNamed("placeholder.png"))
     cell.comment_label.text = topic['comment']
     cell
   end
@@ -119,7 +125,6 @@ class TopicsController < UITableViewController
     @current_topic = @topics[indexPath.row]
     self.performSegueWithIdentifier('topic_detail',sender:nil)
   end
-
 
   def prepareForSegue(segue, sender:sender)
     case segue.identifier

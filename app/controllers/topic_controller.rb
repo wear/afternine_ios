@@ -12,7 +12,7 @@ class TopicController < UIViewController
   def viewDidLoad
     # comment_label.text = topic[:comment]
     image_url = NSURL.URLWithString("#{topic['image']['normal']}")
-    @image = topic_imageview.setImageWithURL(image_url,placeholderImage:UIImage.imageNamed("placeholder.gif"))
+    @image = topic_imageview.setImageWithURL(image_url,placeholderImage:UIImage.imageNamed("placeholder.png"))
 
     # recognizer = UIPanGestureRecognizer.alloc.initWithTarget(self,action:'recognizerDidPan:')
     # view.addGestureRecognizer(recognizer)
@@ -58,10 +58,17 @@ class TopicController < UIViewController
   #   end
  
   #   self.topic_imageview.frame = contentsFrame;
-  # end 
+  # end   
 
   def viewForZoomingInScrollView(scrollView)
     topic_imageview
   end
+
+  def share_wechat(sender)
+    image_data = UIImagePNGRepresentation(@image.image)
+
+    app_delegate = UIApplication.sharedApplication.delegate
+    app_delegate.sendImageContent(image_data,@topic['comment'])    
+  end  
 
 end
