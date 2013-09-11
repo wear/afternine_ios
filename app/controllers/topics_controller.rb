@@ -114,6 +114,7 @@ class TopicsController < UITableViewController
 
   def tableView(tableView,heightForRowAtIndexPath:indexPath)
     topic = @topics[indexPath.row]
+    
     if topic['image']['height'] > 160
       230 + (topic['image']['height'] - 160)
     else

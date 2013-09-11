@@ -39,7 +39,6 @@ GEM
     motion-cocoapods (1.3.0)
       cocoapods (>= 0.17.0)
     motion-schemes (0.0.2)
-    motion-testflight (1.5)
     multi_json (1.7.3)
     multipart-post (1.2.0)
     netrc (0.7.7)
@@ -65,5 +64,4 @@ DEPENDENCIES
   ib
   motion-cocoapods
   motion-schemes
-  motion-testflight
   rake

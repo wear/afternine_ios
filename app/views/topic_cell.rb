@@ -5,4 +5,8 @@ class TopicCell < UITableViewCell
   outlet :topic_imageview
   outlet :comment_label
 
+  def layoutSubviews 
+    super
+  end
+
 end
