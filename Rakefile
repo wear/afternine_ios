@@ -21,11 +21,12 @@ Motion::Project::App.setup do |app|
   app.short_version  = "1.0"  
   app.interface_orientations = [:portrait]
   app.xcode_dir = "/Applications/Xcode.app/Contents/Developer"
-  app.info_plist['UILaunchImageFile'] = 'default.png'
+  # app.info_plist['UILaunchImageFile'] = 'Default.png'
   app.deployment_target = '6.0'
   app.weak_frameworks += ['MessageUI','StoreKit','AudioToolbox','SystemConfiguration','CoreGraphics','AdSupport']
   app.info_plist['CFBundleDisplayName'] = '九点一刻'
   app.info_plist['UIMainStoryboardFile'] = 'iPhone_Storyboard'
+  app.info_plist['UIMainStoryboardFile~ipad'] = 'iPad_Storyboard'
   
   app.release do
     app.identifier = 'com.qiangda.afternine'

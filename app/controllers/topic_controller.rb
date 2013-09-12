@@ -65,21 +65,25 @@ class TopicController < UIViewController
   end
 
   def share_wechat(sender)
-    SVProgressHUD.show
-    app_delegate = UIApplication.sharedApplication.delegate
+    if WXApi.isWXAppInstalled     
+      SVProgressHUD.show
+      app_delegate = UIApplication.sharedApplication.delegate
 
-    thumb_image_url = NSURL.URLWithString("#{topic['image']['thumb']}")
-    SDWebImageDownloader.sharedDownloader.downloadImageWithURL(thumb_image_url,
-                                                    options:0,
-                                                   progress:->(receivedSize,expectedSize){},
-                                                   completed:->(thumb_image,data,error,finished){
-                                                      SVProgressHUD.dismiss
-                                                      if image && finished
-                                                        app_delegate.sendImageContent(topic_imageview.image,thumb_image,@topic['comment']) 
-                                                      else
-                                                        App.alert error.value
-                                                      end
-                                                    })
+      thumb_image_url = NSURL.URLWithString("#{topic['image']['thumb']}")
+      SDWebImageDownloader.sharedDownloader.downloadImageWithURL(thumb_image_url,
+                                                      options:0,
+                                                     progress:->(receivedSize,expectedSize){},
+                                                     completed:->(thumb_image,data,error,finished){
+                                                        SVProgressHUD.dismiss
+                                                        if image && finished
+                                                          app_delegate.sendImageContent(topic_imageview.image,thumb_image,@topic['comment']) 
+                                                        else
+                                                          App.alert error.value
+                                                        end
+                                                      })
+    else
+      App.alert '需要安装微信'
+    end
 
        
   end  
