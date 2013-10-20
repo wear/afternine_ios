@@ -12,7 +12,7 @@ class TopicsController < UITableViewController
   end
 
   def viewDidLoad
-    self.tableView.backgroundView = UIImageView.alloc.initWithImage UIImage.imageNamed("background.png")
+    self.tableView.backgroundColor = "#E8E8E8".to_color
     insertRowAtTop    
     #setup pull-to-refresh
     self.tableView.addPullToRefreshWithActionHandler ->{
@@ -105,6 +105,28 @@ class TopicsController < UITableViewController
 
   def tableView(tableView,heightForRowAtIndexPath:indexPath)
     topic = @topics[indexPath.row]
+
+    # font = UIFont.fontWithName "STHeitiK-Medium",size:14
+    # commentText = topic['comment']
+    
+    # commentSize = commentText.sizeWithFont font,constrainedToSize:CGSizeMake(279, 4000)
+    # imageHeight = topic['image']['height']
+    
+  #   #  if deployment target is iOS7 and you want to get rid of the warning above
+  #   #  comment the line above and uncomment the following section
+    
+  #   #  ios 7 only
+  #   # CGRect boundingRect = [newAboutText boundingRectWithSize:CGSizeMake(268, 4000)
+  #   #                                      options:NSStringDrawingUsesLineFragmentOrigin
+  #   #                                   attributes:@{NSFontAttributeName:font}
+  #   #                                      context:nil];
+  #   # 
+  #   # CGSize boundingSize = boundingRect.size;
+  #   #  end ios7 only
+
+    
+  #   # return (280-15+aboutSize.height);    
+    # return imageHeight + commentSize.height + 40
 
     if topic['image']['height'] > 150
       230 + (topic['image']['height'] - 150)
