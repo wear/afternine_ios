@@ -7,24 +7,17 @@ class TopicsController < UITableViewController
     @topics = []
   end
 
+  def viewDidAppear(animated)
+    adjustHeightOfTableview
+  end
+
   def viewDidLoad
-
-    reach = Reachability.reachabilityWithHostname "www.baidu.com"
-    
-    reach.reachableBlock = lambda {|info|
-      main_queue = Dispatch::Queue.main
-      main_queue.async { tableView.triggerPullToRefresh }      
-    }
-
-    reach.unreachableBlock = lambda {|info|
-      main_queue = Dispatch::Queue.main
-      main_queue.async { App.alert('无网络连接') }
-    }
-
-    reach.startNotifier
-
+    self.tableView.backgroundView = UIImageView.alloc.initWithImage UIImage.imageNamed("background.png")
+    insertRowAtTop    
     #setup pull-to-refresh
-    self.tableView.addPullToRefreshWithActionHandler ->{insertRowAtTop}
+    self.tableView.addPullToRefreshWithActionHandler ->{
+      insertRowAtTop
+    }
 
     # setup infinite scrolling
     self.tableView.addInfiniteScrollingWithActionHandler ->{
@@ -38,8 +31,7 @@ class TopicsController < UITableViewController
       NSURL.URLWithString "#{AssetHost}/topics/before_at.json?target_topic_id=#{@first_topic['id']}"    
     else
       NSURL.URLWithString "#{AssetHost}/topics/before_at.json"
-    end
-
+    end    
     request = NSURLRequest.requestWithURL url
     operation = AFJSONRequestOperation.JSONRequestOperationWithRequest(request,
       success:->(request,response,jsonData) {
@@ -62,6 +54,7 @@ class TopicsController < UITableViewController
             @last_topic = jsonData['topics'].last
             tableView.reloadData
           end
+          adjustHeightOfTableview
         end
         tableView.pullToRefreshView.stopAnimating
       },failure:nil)
@@ -106,17 +99,15 @@ class TopicsController < UITableViewController
     @cellIdentifier ||= "topicItemCell"
     cell = tableView.dequeueReusableCellWithIdentifier(@cellIdentifier)
 
-    image_url = NSURL.URLWithString("#{topic['image']['normal']}")
-    cell.topic_imageview.setImageWithURL(image_url,placeholderImage:UIImage.imageNamed("placeholder.png"))
-    cell.comment_label.text = topic['comment']
+    cell.setup_with_topic topic
     cell
   end
 
   def tableView(tableView,heightForRowAtIndexPath:indexPath)
     topic = @topics[indexPath.row]
 
-    if topic['image']['height'] > 160
-      230 + (topic['image']['height'] - 160)
+    if topic['image']['height'] > 150
+      230 + (topic['image']['height'] - 150)
     else
       230
     end
@@ -133,5 +124,42 @@ class TopicsController < UITableViewController
       segue.destinationViewController.topic = @current_topic
     end
   end
+
+  def adjustHeightOfTableview
+    height = self.tableView.contentSize.height;
+    maxHeight = self.tableView.superview.frame.size.height - self.tableView.frame.origin.y;
+
+    # if the height of the content is greater than the maxHeight of
+    # total space on the screen, limit the height to the size of the
+    # superview.
+
+    height = maxHeight if (height > maxHeight)
+
+    # now set the frame accordingly
+
+    UIView.animateWithDuration 0.25,animations:->{
+      frame = self.tableView.frame;
+      frame.size.height = height;
+      self.tableView.frame = frame;
+      # if you have other controls that should be resized/moved to accommodate
+      # the resized tableview, do that here, too
+    }
+  end
+
+  def networkOpration(&opt)
+    reach = Reachability.reachabilityWithHostname "www.baidu.com"
+    
+    reach.reachableBlock = lambda {|info|
+      main_queue = Dispatch::Queue.main
+      main_queue.async { opt.call }      
+    }
+
+    reach.unreachableBlock = lambda {|info|
+      main_queue = Dispatch::Queue.main
+      main_queue.async { App.alert('无网络连接') }
+    }
+
+    reach.startNotifier      
+  end 
 
 end

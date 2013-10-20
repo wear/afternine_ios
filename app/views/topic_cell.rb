@@ -4,9 +4,20 @@ class TopicCell < UITableViewCell
 
   outlet :topic_imageview
   outlet :comment_label
+  outlet :main_view
 
   def layoutSubviews 
     super
+  end
+
+  def setup_with_topic(topic)
+    main_view.layer.cornerRadius = 10
+    main_view.layer.masksToBounds = true  
+
+    image_url = NSURL.URLWithString("#{topic['image']['small']}")
+    topic_imageview.setImageWithURL(image_url,placeholderImage:UIImage.imageNamed("placeholder.png"))
+    # topic_imageview.image = UIImage.imageNamed("placeholder.png")
+    comment_label.text = topic['comment']    
   end
 
 end

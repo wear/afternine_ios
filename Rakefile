@@ -20,13 +20,13 @@ Motion::Project::App.setup do |app|
   app.version  = "1.0"
   app.short_version  = "1.0"  
   app.interface_orientations = [:portrait]
-  app.xcode_dir = "/Applications/Xcode.app/Contents/Developer"
+  # app.xcode_dir = "/Applications/Xcode.app/Contents/Developer"
   # app.info_plist['UILaunchImageFile'] = 'Default.png'
   app.deployment_target = '6.0'
   app.weak_frameworks += ['MessageUI','StoreKit','AudioToolbox','SystemConfiguration','CoreGraphics','AdSupport']
   app.info_plist['CFBundleDisplayName'] = '九点一刻'
   app.info_plist['UIMainStoryboardFile'] = 'iPhone_Storyboard'
-  app.info_plist['UIMainStoryboardFile~ipad'] = 'iPad_Storyboard'
+  # app.info_plist['UIMainStoryboardFile~ipad'] = 'iPad_Storyboard'
   
   app.release do
     app.identifier = 'com.qiangda.afternine'
@@ -34,10 +34,9 @@ Motion::Project::App.setup do |app|
     app.provisioning_profile = "/Users/stephen/Documents/Development/money/ios/distribute/AfternineDistribute.mobileprovision"
   end
 
-
   app.libs << "/usr/lib/libz.dylib"  
   app.vendor_project('vendor/Umeng', :static,:products => ["libMobClickLibrary.a"])
-  app.vendor_project('vendor/admob', :static,:products => ["libGoogleAdMobAds.a"],:force_load => false)
+
 
   app.vendor_project('vendor/weixin', :static,
     :products => ["libWeChatSDK_armv7_armv7s.a"],
